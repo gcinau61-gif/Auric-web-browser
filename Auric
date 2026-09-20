@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="ASCII">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auric</title>
+    <style>
+        body {
+    font-family: 'Roboto', sans-serif;
+            background-color: #ffffff;
+            color: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 48px;
+	    color: #111111
+        }
+        
+        form {
+            display: flex;
+            gap: 10px;
+            width: 95%;
+            max-width: 450px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background-color: #00FFFF;
+            color: white;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            border-radius: 6px;
+            border: none;
+            background-color: #00FFFF;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #000FFF;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Auric</h1>
+    
+    <!-- This form submits directly to Google's search URL -->
+    <form action="https://www.google.com/search" method="GET" target="_blank">
+        <input type="text" name="q" placeholder="Search Google or type a URL..." required>
+        <button type="submit">Google Search</button>
+    </form>
+<!-- Dashboard Features Section -->
+<div class="features-container">
+    <div class="card">
+        <h3>Daily Laugh</h3>
+        <p id="joke-text">Get a joke on this button here!</p>
+        <button onclick="getJoke()">Get Joke</button>
+    </div>
+    
+    <div class="card">
+        <h3>Random Pet</h3>
+        <img id="pet-img" src="" alt="Pets! Guys?" style="max-width: 220px; display: none; border-radius: 12px; margin-bottom: 12px;">
+        <br>
+        <button onclick="getPet()">Get Pet Photo</button>
+    </div>
+<script>
+    // Fetch a random joke from a free public API
+    function getJoke() {
+        fetch('https://official-joke-api.appspot.com/random_joke')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('joke-text').innerText = data.setup + " - " + data.punchline;
+            })
+            .catch(error => {
+                document.getElementById('joke-text').innerText = "What do you call a website with no joke? A bad website.";
+            });
+    }
+
+    function getPet() {
+    const isDog = Math.random() < 0.5;
+    const url = isDog ? 'https://dog.ceo/api/breeds/image/random' : 'https://api.thecatapi.com/v1/images/search';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const img = document.getElementById('pet-img');
+            img.src = isDog ? data.message : data[0].url;
+            img.style.display = 'block';
+        })
+        .catch(error => {
+            console.log("Ohh :/ No dog pictures for you..");
+        });
+}
+</script>
+</div>
+</body>
+</html>
